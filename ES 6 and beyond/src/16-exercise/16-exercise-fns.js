@@ -9,3 +9,7 @@ export function addTwo(num) {
 export function addThree(num) {
     return 3 + num;
 }
+
+// export  {addOne as utils} 
+// export  {addTwo as utils} 
+// export  {addThree as utils} 
