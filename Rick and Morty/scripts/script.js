@@ -41,17 +41,17 @@ root.appendChild(sideBar)
 async function episodeList(url) {
   const episodes = await makeRequest(url)
 
-  episodes.results.forEach(episode => {
+  episodes.results.forEach(({episode, id, name, characters, air_date}) => {
     const episodeNumber = document.createElement("a")
 
     episodeNumber.classList.add("episode")
-    episodeNumber.innerText = `Episode ${episode.id}`
+    episodeNumber.innerText = `Episode ${id}`
 
     sideBar.appendChild(episodeNumber)
     sideBar.appendChild(loadBtn)
 
     episodeNumber.addEventListener("click", () => {
-      showCharacters(episode.name, episode.air_date, episode.episode, episode.characters)
+      showCharacters(name, air_date, episode, characters)
     })
   })
 }
@@ -158,7 +158,7 @@ async function showLocationDetails(url) {
 
 async function createCharacter(URLs) {
   const characters = await resolvePromises(URLs)
-  characters.forEach(character => {
+  characters.forEach(({image, name, species, status, gender, origin, episode}) => {
     const characterCard = document.createElement("div")
     const characterImg = document.createElement("img")
     const characterName = document.createElement("h3")
@@ -169,9 +169,9 @@ async function createCharacter(URLs) {
     characterName.classList.add("card-main-title")
     characterDetails.classList.add("card-sub-title")
 
-    characterImg.src = character.image
-    characterName.innerText = character.name
-    characterDetails.innerText = `${character.species} | ${character.status}`
+    characterImg.src = image
+    characterName.innerText = name
+    characterDetails.innerText = `${species} | ${status}`
 
     displayBox.appendChild(characterCard)
     characterCard.appendChild(characterImg)
@@ -179,7 +179,7 @@ async function createCharacter(URLs) {
     characterCard.appendChild(characterDetails)
 
     characterCard.addEventListener("click", () => {
-      showCharacterDetails(character.image, character.name, character.species, character.status, character.gender, character.origin, character.episode)
+      showCharacterDetails(image, name, species, status, gender, origin, episode)
     })
   })
 }
@@ -188,7 +188,7 @@ async function createCharacter(URLs) {
 
 async function createEpisodeCards(URLs) {
   const episodes = await resolvePromises(URLs)
-  episodes.forEach(episode => {
+  episodes.forEach(({id, episode}) => {
     const episodeCard = document.createElement("div")
     const episodeNumber = document.createElement("h3")
     const episodeCode = document.createElement("h3")
@@ -197,8 +197,8 @@ async function createEpisodeCards(URLs) {
     episodeNumber.classList.add("card-main-title")
     episodeCode.classList.add("card-sub-title")
 
-    episodeNumber.innerText = `Episode ${episode.id}`
-    episodeCode.innerText = episode.episode
+    episodeNumber.innerText = `Episode ${id}`
+    episodeCode.innerText = episode
 
     displayBox.appendChild(episodeCard)
     episodeCard.appendChild(episodeNumber)
